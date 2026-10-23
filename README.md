@@ -13,6 +13,8 @@ $ cargo run 1>out 2>err
 $ cargo run -- Hello world
 
 $ cargo run -- -n Hello world
+
+$ cargo test
 ```
 
 
