@@ -4,7 +4,8 @@
 
 ```bash
 # ファイルをコンパイル
-$ rustc hello.rs
+$ cd hello
+$ rustc src/hello.rs
 
 # 実行
 $ file hello
