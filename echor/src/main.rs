@@ -21,5 +21,17 @@ fn main() {
         )
         .get_matches();
 
-    println!("{:?}", matches);
+    // 引数 text から Option<Vec<String>> を取得する
+    let text = matches.values_of_lossy("text").unwrap();
+
+    // 引数　omit_newline から bool を取得する
+    let omit_newline = matches.is_present("omit_newline");
+
+    // 改行がデフォルト
+    let mut ending = "\n";
+    if omit_newline {
+        ending = "";
+    }
+
+    println!("{}{}", text.join(" "), ending);
 }

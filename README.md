@@ -8,9 +8,11 @@ $ cargo run -- --help
 
 $ cargo run -- --version
 
-$ cargo run -- -n Hello world
-
 $ cargo run 1>out 2>err
+
+$ cargo run -- Hello world
+
+$ cargo run -- -n Hello world
 ```
 
 
