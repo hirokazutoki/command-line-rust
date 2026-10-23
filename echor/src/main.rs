@@ -27,7 +27,5 @@ fn main() {
     // 引数　omit_newline から bool を取得する
     let omit_newline = matches.is_present("omit_newline");
 
-    let ending = if omit_newline { "" } else { "\n" };
-
-    println!("{}{}", text.join(" "), ending);
+    println!("{}{}", text.join(" "), if omit_newline { "" } else { "\n" });
 }
