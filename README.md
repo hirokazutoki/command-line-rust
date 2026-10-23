@@ -24,4 +24,7 @@ Hello, world!
 
 # test
 $ cargo test
+
+## シングルスレッドでテストを実行する
+$ cargo test -- --test-threads=1
 ```
