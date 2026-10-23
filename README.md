@@ -14,6 +14,9 @@ $ cargo run -- Hello world
 
 $ cargo run -- -n Hello world
 
+##　あらかじめ echo コマンドの実行結果を保存しておいて、expected とする
+$ ./mk-outs.sh
+
 $ cargo test
 ```
 
