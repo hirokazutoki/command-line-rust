@@ -5,12 +5,20 @@
 ```bash
 # ファイルをコンパイル
 $ cd hello
-$ rustc src/hello.rs
 
-# 実行
-$ file hello
-hello: Mach-O 64-bit executable arm64
+# コンパイル&実行
+$ cargo run
+cargo run
+   Compiling hello v0.1.0 (/Users/hoge/command-line-rust/hello)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.59s
+     Running `target/debug/hello`
+Hello, world!
 
-$ ./hello
+## ステータスを表示させたくない場合
+$ cargo run --quiet
+Hello, world!
+
+## 実行ファイルを直接実行する
+$ ./target/debug/hello 
 Hello, world!
 ```
