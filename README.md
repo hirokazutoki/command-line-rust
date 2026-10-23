@@ -21,4 +21,7 @@ Hello, world!
 ## 実行ファイルを直接実行する
 $ ./target/debug/hello 
 Hello, world!
+
+# test
+$ cargo test
 ```
