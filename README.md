@@ -1,9 +1,26 @@
 # Command-line Rust (Rust練習帳)
 
+## echo
+```aiignore
+cd echor
+
+$ cargo run
+Args { inner: ["target/debug/echor"] }
+
+$ cargo run Hello world
+Args { inner: ["target/debug/echor", "Hello", "world"] }
+
+$ cargo run Hello world -n
+Args { inner: ["target/debug/echor", "Hello", "world", "-n"] }
+
+$ cargo run -- -n Hello world
+Args { inner: ["target/debug/echor", "-n", "Hello", "world"] }
+```
+
+
 ## Hello, world!
 
 ```bash
-# ファイルをコンパイル
 $ cd hello
 
 # コンパイル&実行
