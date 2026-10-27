@@ -1,5 +1,15 @@
 # Command-line Rust (Rust練習帳)
 
+## cat
+```bash
+$ cd catr
+
+$ cargo run
+
+# クレートを直接呼びたい場合
+$ cargo run -- --lib
+```
+
 ## echo
 ```aiignore
 cd echor
