@@ -20,14 +20,22 @@ pub fn get_args() -> MyResult<Config> {
         .arg(
             Arg::with_name("number_lines")
                 .short("n")
+                .long("number")
+                .help("Number lines")
                 .takes_value(false),
         )
         .arg(
             Arg::with_name("number_nonblank_lines")
                 .short("b")
+                .long("number-nonblank")
+                .help("Number nonblank lines")
                 .takes_value(false),
         )
         .get_matches();
+
+    if matches.is_present("number_lines") && matches.is_present("number_nonblank_lines") {
+        return Err(From::from("error: The argument '--number-nonblank' cannot be used with '--number'"));
+    }
 
     Ok(Config {
         files: matches.values_of_lossy("files").unwrap(),
@@ -38,7 +46,7 @@ pub fn get_args() -> MyResult<Config> {
 
 type MyResult<T> = Result<T, Box<dyn Error>>;
 
-pub fn run() -> MyResult<()> {
-    println!("Hello, world!");
+pub fn run(config: Config) -> MyResult<()> {
+    dbg!(config);
     Ok(())
 }

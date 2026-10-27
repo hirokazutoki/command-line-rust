@@ -6,6 +6,11 @@ $ cd catr
 
 $ cargo run
 
+$ cargo run -- --help
+
+# -b と -n の併用は不可
+$ cargo run -- -b -n tests/inputs/fox.txt
+
 # クレートを直接呼びたい場合
 $ cargo run -- --lib
 ```
