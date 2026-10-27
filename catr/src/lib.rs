@@ -14,15 +14,18 @@ pub fn get_args() -> MyResult<Config> {
         .author("Hirokazu Toki")
         .arg(
             Arg::with_name("files")
-                .required(true)
-                .min_values(1),
+                .value_name("FILE")
+                .help("Input file(s)")
+                .multiple(true)
+                .default_value("-"),
         )
         .arg(
             Arg::with_name("number_lines")
                 .short("n")
                 .long("number")
                 .help("Number lines")
-                .takes_value(false),
+                .takes_value(false)
+                .conflicts_with("number_nonblank_lines"),
         )
         .arg(
             Arg::with_name("number_nonblank_lines")
@@ -32,10 +35,6 @@ pub fn get_args() -> MyResult<Config> {
                 .takes_value(false),
         )
         .get_matches();
-
-    if matches.is_present("number_lines") && matches.is_present("number_nonblank_lines") {
-        return Err(From::from("error: The argument '--number-nonblank' cannot be used with '--number'"));
-    }
 
     Ok(Config {
         files: matches.values_of_lossy("files").unwrap(),
