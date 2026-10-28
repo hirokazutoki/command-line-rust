@@ -58,7 +58,18 @@ pub fn run(config: Config) -> MyResult<()> {
     for filename in config.files {
         match open(&filename) {
             Err(err) => eprintln!("Failed to open {}: {}", filename, err),
-            Ok(_) => println!("Opened {}", filename),
+            Ok(_) => {
+                // open file
+                let file = File::open(filename)?;
+                // BufReaderでラップする
+                let reader = BufReader::new(file);
+
+                // .lines()メソッド（BufReadトレイトで提供）を使って1行ずつ処理
+                for line in reader.lines() {
+                    let line = line?;
+                    println!("{}", line);
+                }
+            },
         }
     }
     Ok(())
