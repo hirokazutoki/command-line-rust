@@ -20,6 +20,9 @@ $ cargo run -- tests/inputs/fox.txt
 $ cat tests/inputs/fox.txt | cargo run
 $ cargo run -- - < tests/inputs/fox.txt 
 
+$ cargo run -- -n tests/inputs/fox.txt
+$ cargo run -- -n tests/inputs/the-bustle.txt
+
 # クレートを直接呼びたい場合
 $ cargo run -- --lib
 ```
