@@ -59,13 +59,10 @@ pub fn run(config: Config) -> MyResult<()> {
         match open(&filename) {
             Err(err) => eprintln!("Failed to open {}: {}", filename, err),
             Ok(file) => {
-                let mut line_num = 0;
-                for line_result in file.lines() {
+                for (line_num, line_result) in file.lines().enumerate() {
                     let line = line_result?;
-                    line_num += 1;
-
                     if config.number_lines {
-                        println!("{:>6}\t{}", line_num, line);
+                        println!("{:>6}\t{}", line_num + 1, line);
                     } else {
                         println!("{}", line);
                     }
