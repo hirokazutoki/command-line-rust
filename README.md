@@ -8,6 +8,9 @@ $ cargo run
 
 $ cargo run -- --help
 
+$ touch cant-touch-this && chmod 000 cant-touch-this
+$ cargo run -- blargh cant-touch-this tests/inputs/fox.txt
+
 # -b と -n の併用は不可
 $ cargo run -- -b -n tests/inputs/fox.txt
 
