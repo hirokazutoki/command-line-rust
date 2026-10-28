@@ -1,5 +1,7 @@
 use std::error::Error;
 use clap::{App, Arg};
+use std::fs::file;
+use std::io::{self, BufRead, BufReader};
 
 #[derive(Debug)]
 pub struct Config {
@@ -41,6 +43,14 @@ pub fn get_args() -> MyResult<Config> {
         number_lines: matches.is_present("number_lines"),
         number_nonblank_lines: matches.is_present("number_nonblank_lines"),
     })
+}
+
+// dyn BufRead だけでは、戻り値のサイズが不明なので、コンパイルエラーになる
+fn open(filename: &str) -> MyResult<Box<dyn BufRead>> {
+    match filename {
+        "-" => Ok(Box::new(BufReader::new(io::stdin()))),
+        _ => Ok(Box::new(BufReader::new(file(filename)?))),
+    }
 }
 
 type MyResult<T> = Result<T, Box<dyn Error>>;
