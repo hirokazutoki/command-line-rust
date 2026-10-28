@@ -15,6 +15,11 @@ $ cargo test skips_bad_file
 # -b と -n の併用は不可
 $ cargo run -- -b -n tests/inputs/fox.txt
 
+# 全て同じ出力結果
+$ cargo run -- tests/inputs/fox.txt
+$ cat tests/inputs/fox.txt | cargo run
+$ cargo run -- - < tests/inputs/fox.txt 
+
 # クレートを直接呼びたい場合
 $ cargo run -- --lib
 ```
