@@ -67,6 +67,13 @@ pub fn run(config: Config) -> MyResult<()> {
 
                     if config.number_lines {
                         println!("{:>6}\t{}", count, line);
+                    } else if config.number_nonblank_lines {
+                        if !line.is_empty() {
+                            println!("{:>6}\t{}", count, line);
+                        } else {
+                            count -= 1;
+                            println!();
+                        }
                     } else {
                         println!("{}", line);
                     }
