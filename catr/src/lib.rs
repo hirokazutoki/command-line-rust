@@ -58,25 +58,10 @@ pub fn run(config: Config) -> MyResult<()> {
     for filename in config.files {
         match open(&filename) {
             Err(err) => eprintln!("Failed to open {}: {}", filename, err),
-            Ok(reader) => {
-                let mut count = 0;
-                // .lines()メソッド（BufReadトレイトで提供）を使って1行ずつ処理
-                for line in reader.lines() {
-                    let line = line?;
-                    count += 1;
-
-                    if config.number_lines {
-                        println!("{:>6}\t{}", count, line);
-                    } else if config.number_nonblank_lines {
-                        if !line.is_empty() {
-                            println!("{:>6}\t{}", count, line);
-                        } else {
-                            count -= 1;
-                            println!();
-                        }
-                    } else {
-                        println!("{}", line);
-                    }
+            Ok(file) => {
+                for line_result in file.lines() {
+                    let line = line_result?;
+                    println!("{}", line);
                 }
             },
         }
