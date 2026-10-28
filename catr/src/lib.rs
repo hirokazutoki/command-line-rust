@@ -59,9 +59,16 @@ pub fn run(config: Config) -> MyResult<()> {
         match open(&filename) {
             Err(err) => eprintln!("Failed to open {}: {}", filename, err),
             Ok(file) => {
+                let mut line_num = 0;
                 for line_result in file.lines() {
                     let line = line_result?;
-                    println!("{}", line);
+                    line_num += 1;
+
+                    if config.number_lines {
+                        println!("{:>6}\t{}", line_num, line);
+                    } else {
+                        println!("{}", line);
+                    }
                 }
             },
         }
