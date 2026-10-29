@@ -13,6 +13,15 @@ $ cargo run -- -b 4 tests/inputs/twelve.txt
 $ cargo run -- -l 20 -b 4 tests/inputs/twelve.txt
 
 $ cargo test test_parse_positive_int
+$ cargo run -- -n 3 tests/inputs/one.txt
+$ cargo run -- -c 4 tests/inputs/*.txt
+
+# -n や -c の値が正の整数として解析できない場合、エラーで停止する
+$ cargo run -- -n blargh tests/inputs/one.txt
+$ cargo run -- -c 0 tests/inputs/one.txt
+
+# -n と -c の併用は不可
+$ cargo run -- -n 1 -c 1 tests/inputs/one.txt
 ```
 
 ## cat

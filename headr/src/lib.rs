@@ -1,5 +1,7 @@
 use clap::{App, Arg};
 use std::error::Error;
+use std::fs::File;
+use std::io::{self, BufRead, BufReader};
 
 type MyResult<T> = Result<T, Box<dyn Error>>;
 
@@ -12,6 +14,12 @@ pub struct Config {
 
 pub fn run(config: Config) -> MyResult<()> {
     println!("{:?}", config);
+    for filename in config.files {
+        match open(&filename) {
+            Err(err) => eprintln!("Failed to open {}: {}", filename, err),
+            Ok(_file) => {}
+        }
+    }
     Ok(())
 }
 
@@ -34,8 +42,7 @@ pub fn get_args() -> MyResult<Config> {
                 .value_name("LINES")
                 .help("Number of lines")
                 .takes_value(true)
-                .default_value("10")
-                .conflicts_with("bytes"), // 効いていない？
+                .default_value("10"),
         )
         .arg(
             Arg::with_name("bytes")
@@ -43,15 +50,23 @@ pub fn get_args() -> MyResult<Config> {
                 .long("bytes")
                 .value_name("BYTES")
                 .help("Number of bytes")
-                .takes_value(true),
+                .takes_value(true)
+                .conflicts_with("lines"),
         )
         .get_matches();
 
     Ok(Config {
         files: matches.values_of_lossy("files").unwrap(),
-        lines: matches.value_of("lines").unwrap_or("10").parse()?, // Assistant AI
-        bytes: matches.value_of("bytes").map(|s| s.parse()).transpose()?, // Assistant AI
+        lines: parse_positive_int(matches.value_of("lines").unwrap())?, // Assistant AI
+        bytes: parse_positive_int(matches.value_of("bytes").unwrap())?,
     })
+}
+
+fn open(filename: &str) -> MyResult<Box<dyn BufRead>> {
+    match filename {
+        "-" => Ok(Box::new(BufReader::new(io::stdin()))),
+        _ => Ok(Box::new(BufReader::new(File::open(filename)?))),
+    }
 }
 
 // コマンドライン引数は全て文字列として扱われるため、linesとbytesが有効な整数値であるかの確認が必要。
