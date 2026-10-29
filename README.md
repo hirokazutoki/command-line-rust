@@ -1,5 +1,12 @@
 # Command-line Rust (Rust練習帳)
 
+## head
+```bash
+$ cd headr
+
+$ cargo test
+```
+
 ## cat
 ```bash
 $ cd catr
