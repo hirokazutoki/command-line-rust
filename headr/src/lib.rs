@@ -19,6 +19,7 @@ pub fn get_args() -> MyResult<Config> {
     let matches = App::new("headr")
         .version("0.1.0")
         .author("Hirokazu Toki")
+        .about("Rust head")
         .arg(
             Arg::with_name("files")
                 .value_name("FILE")
@@ -28,17 +29,20 @@ pub fn get_args() -> MyResult<Config> {
         )
         .arg(
             Arg::with_name("lines")
-                .short("l")
+                .short("n")
                 .long("lines")
-                .help("Lines number")
+                .value_name("LINES")
+                .help("Number of lines")
                 .takes_value(true)
+                .default_value("10")
                 .conflicts_with("bytes"), // 効いていない？
         )
         .arg(
             Arg::with_name("bytes")
-                .short("b")
+                .short("c")
                 .long("bytes")
-                .help("bytes")
+                .value_name("BYTES")
+                .help("Number of bytes")
                 .takes_value(true),
         )
         .get_matches();
