@@ -5,6 +5,12 @@
 $ cd headr
 
 $ cargo test
+
+$ cargo run -- -l 20 tests/inputs/twelve.txt
+
+$ cargo run -- -b 4 tests/inputs/twelve.txt
+
+$ cargo run -- -l 20 -b 4 tests/inputs/twelve.txt
 ```
 
 ## cat
