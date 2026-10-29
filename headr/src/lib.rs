@@ -55,6 +55,8 @@ pub fn get_args() -> MyResult<Config> {
         )
         .get_matches();
 
+    // TODO: p.98から
+
     Ok(Config {
         files: matches.values_of_lossy("files").unwrap(),
         lines: parse_positive_int(matches.value_of("lines").unwrap())?, // Assistant AI
