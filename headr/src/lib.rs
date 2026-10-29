@@ -52,15 +52,10 @@ pub fn get_args() -> MyResult<Config> {
 
 // コマンドライン引数は全て文字列として扱われるため、linesとbytesが有効な整数値であるかの確認が必要。
 fn parse_positive_int(val: &str) -> MyResult<usize> {
-    match val.parse::<usize>() {
-        Err(_) => Box<Err(format!("{}", val))>
-        Ok(n) => {
-            if n == 0 {
-                Box<Err(format!("{}", val))>
-            } else {
-                Ok(n)
-            }
-        },
+    match val.parse() {
+        Ok(n) if n > 0 => Ok(n),
+        // From::fromを使用して、与えられた文字列をErrorに変換している
+        _ => Err(From::from(val)),
     }
 }
 
