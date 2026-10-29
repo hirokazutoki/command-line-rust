@@ -11,6 +11,8 @@ $ cargo run -- -l 20 tests/inputs/twelve.txt
 $ cargo run -- -b 4 tests/inputs/twelve.txt
 
 $ cargo run -- -l 20 -b 4 tests/inputs/twelve.txt
+
+$ cargo test test_parse_positive_int
 ```
 
 ## cat
