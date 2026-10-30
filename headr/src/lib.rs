@@ -1,7 +1,7 @@
 use clap::{App, Arg};
 use std::error::Error;
 use std::fs::File;
-use std::io::{self, BufRead, BufReader, Read, Write};
+use std::io::{self, BufRead, BufReader};
 
 type MyResult<T> = Result<T, Box<dyn Error>>;
 
@@ -16,15 +16,9 @@ pub fn run(config: Config) -> MyResult<()> {
     for filename in config.files {
         match open(&filename) {
             Err(err) => eprintln!("Failed to open {}: {}", filename, err),
-            Ok(mut file) => {
-                if let Some(num_bytes) = config.bytes {
-                    let mut buffer = vec![0; num_bytes];
-                    let bytes_read = file.read(&mut buffer)?;
-                    io::stdout().write_all(&buffer[..bytes_read])?;
-                } else {
-                    for line in file.lines().take(config.lines) {
-                        println!("{}", line?);
-                    }
+            Ok(file) => {
+                for line in file.lines().take(config.lines) {
+                    println!("{}", line?);
                 }
             }
         }
