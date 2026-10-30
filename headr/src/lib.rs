@@ -13,11 +13,12 @@ pub struct Config {
 }
 
 pub fn run(config: Config) -> MyResult<()> {
-    println!("{:?}", config);
     for filename in config.files {
         match open(&filename) {
             Err(err) => eprintln!("Failed to open {}: {}", filename, err),
-            Ok(_file) => {}
+            Ok(file) => {
+                println!("Opened {}", filename);
+            }
         }
     }
     Ok(())
@@ -41,7 +42,6 @@ pub fn get_args() -> MyResult<Config> {
                 .long("lines")
                 .value_name("LINES")
                 .help("Number of lines")
-                .takes_value(true)
                 .default_value("10"),
         )
         .arg(
@@ -55,12 +55,27 @@ pub fn get_args() -> MyResult<Config> {
         )
         .get_matches();
 
-    // TODO: p.98から
+    let lines = matches
+        .value_of("lines")
+        // Someから$strをアンパックし、parse_positive_intに渡す
+        .map(parse_positive_int)
+        // Option::mapの結果は、Option＜Result>。
+        // Option::transposeを使って、Result<Option>に変換
+        .transpose()
+        // Okであればそのままで、Errであればエラーメッセージを作成。
+        // その後、?を使ってErrに伝播させるか、Ok値をアンパックするかの処理
+        .map_err(|e| format!("illegal line count -- {}", e))?;
+
+    let bytes = matches
+        .value_of("bytes")
+        .map(parse_positive_int)
+        .transpose()
+        .map_err(|e| format!("illegal byte count -- {}", e))?;
 
     Ok(Config {
         files: matches.values_of_lossy("files").unwrap(),
-        lines: parse_positive_int(matches.value_of("lines").unwrap())?, // Assistant AI
-        bytes: parse_positive_int(matches.value_of("bytes").unwrap())?,
+        lines: lines.unwrap(),
+        bytes,
     })
 }
 

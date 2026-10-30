@@ -22,6 +22,10 @@ $ cargo run -- -c 0 tests/inputs/one.txt
 
 # -n と -c の併用は不可
 $ cargo run -- -n 1 -c 1 tests/inputs/one.txt
+
+$ cargo run -- blargh tests/inputs/one.txt
+Failed to open blargh: No such file or directory (os error 2)
+Opened tests/inputs/one.txt
 ```
 
 ## cat
