@@ -26,6 +26,12 @@ $ cargo run -- -n 1 -c 1 tests/inputs/one.txt
 $ cargo run -- blargh tests/inputs/one.txt
 Failed to open blargh: No such file or directory (os error 2)
 Opened tests/inputs/one.txt
+
+# Öが2バイト長の文字列
+$ head -c 2 tests/inputs/one.txt 
+Ö
+$ head -c 1 tests/inputs/one.txt
+�
 ```
 
 ## cat
