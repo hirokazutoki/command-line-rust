@@ -18,6 +18,18 @@ pub fn run(config: Config) -> MyResult<()> {
             Err(err) => eprintln!("Failed to open {}: {}", filename, err),
             Ok(file) => {
                 for (line_num, line) in file.lines().enumerate() {
+                    if config.bytes.is_some() {
+                        let until = config.bytes.unwrap() + 1;
+                        let bytes = String::from_utf8_lossy(line.unwrap().as_bytes());
+                        println!("{}", config.bytes.unwrap());
+                        println!("{}", until);
+                        let slice = &bytes[1..until];
+
+                        println!("{:?}", slice); // [82, 117, 115, 116]
+                        // println!("{}", std::str::from_utf8(slice).unwrap()); // "Rust"
+                        break;
+                    }
+
                     if line_num + 1 > config.lines {
                         break;
                     }
