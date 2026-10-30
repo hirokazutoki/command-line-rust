@@ -17,7 +17,13 @@ pub fn run(config: Config) -> MyResult<()> {
         match open(&filename) {
             Err(err) => eprintln!("Failed to open {}: {}", filename, err),
             Ok(file) => {
-                println!("Opened {}", filename);
+                for (line_num, line) in file.lines().enumerate() {
+                    if line_num + 1 > config.lines {
+                        break;
+                    }
+
+                    println!("{}", line.unwrap());
+                }
             }
         }
     }

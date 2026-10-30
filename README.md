@@ -32,6 +32,22 @@ $ head -c 2 tests/inputs/one.txt
 Ö
 $ head -c 1 tests/inputs/one.txt
 �
+
+$ cargo run -- -n 1 tests/inputs/twelve.txt
+one
+
+$ cargo run -- -n 11 tests/inputs/twelve.txt
+one
+two
+three
+four
+five
+six
+seven
+eight
+nine
+ten
+eleven
 ```
 
 ## cat
