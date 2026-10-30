@@ -36,10 +36,7 @@ fn gen_bad_file() -> String {
 #[test]
 fn dies_bad_bytes() -> Result<()> {
     let bad = random_string();
-    let expected = format!(
-        "invalid value '{bad}' for \
-        '--bytes <BYTES>': invalid digit found in string"
-    );
+    let expected = format!("illegal byte count -- {bad}");
 
     Command::cargo_bin(PRG)?
         .args(["-c", &bad, EMPTY])
@@ -54,10 +51,7 @@ fn dies_bad_bytes() -> Result<()> {
 #[test]
 fn dies_bad_lines() -> Result<()> {
     let bad = random_string();
-    let expected = format!(
-        "error: invalid value '{bad}' for \
-        '--lines <LINES>': invalid digit found in string"
-    );
+    let expected = format!("illegal line count -- {bad}");
     Command::cargo_bin(PRG)?
         .args(["-n", &bad, EMPTY])
         .assert()
@@ -70,7 +64,7 @@ fn dies_bad_lines() -> Result<()> {
 // --------------------------------------------------
 #[test]
 fn dies_bytes_and_lines() -> Result<()> {
-    let msg = "the argument '--lines <LINES>' cannot be \
+    let msg = "The argument '--lines <LINES>' cannot be \
                used with '--bytes <BYTES>'";
 
     Command::cargo_bin(PRG)?
