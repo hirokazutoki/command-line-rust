@@ -13,10 +13,19 @@ pub struct Config {
 }
 
 pub fn run(config: Config) -> MyResult<()> {
-    for filename in config.files {
+    let num_files = config.files.len();
+
+    for (file_num, filename) in config.files.iter().enumerate() {
         match open(&filename) {
             Err(err) => eprintln!("Failed to open {}: {}", filename, err),
             Ok(mut file) => {
+                if num_files > 1 {
+                    println!(
+                        "{}==> {} <==",
+                        if file_num > 0 { "\n" } else { "" },
+                        filename);
+                }
+
                 if let Some(num_bytes) = config.bytes {
                     // 書き方１
                     // let mut handle = file.take(num_bytes as u64);
