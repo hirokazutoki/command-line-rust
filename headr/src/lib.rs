@@ -1,7 +1,7 @@
 use clap::{App, Arg};
 use std::error::Error;
 use std::fs::File;
-use std::io::{self, BufRead, BufReader};
+use std::io::{self, BufRead, BufReader, Read, Write};
 
 type MyResult<T> = Result<T, Box<dyn Error>>;
 
@@ -16,25 +16,15 @@ pub fn run(config: Config) -> MyResult<()> {
     for filename in config.files {
         match open(&filename) {
             Err(err) => eprintln!("Failed to open {}: {}", filename, err),
-            Ok(file) => {
-                for (line_num, line) in file.lines().enumerate() {
-                    if config.bytes.is_some() {
-                        let until = config.bytes.unwrap() + 1;
-                        let bytes = String::from_utf8_lossy(line.unwrap().as_bytes());
-                        println!("{}", config.bytes.unwrap());
-                        println!("{}", until);
-                        let slice = &bytes[1..until];
-
-                        println!("{:?}", slice); // [82, 117, 115, 116]
-                        // println!("{}", std::str::from_utf8(slice).unwrap()); // "Rust"
-                        break;
+            Ok(mut file) => {
+                if let Some(num_bytes) = config.bytes {
+                    let mut buffer = vec![0; num_bytes];
+                    let bytes_read = file.read(&mut buffer)?;
+                    io::stdout().write_all(&buffer[..bytes_read])?;
+                } else {
+                    for line in file.lines().take(config.lines) {
+                        println!("{}", line?);
                     }
-
-                    if line_num + 1 > config.lines {
-                        break;
-                    }
-
-                    println!("{}", line.unwrap());
                 }
             }
         }
