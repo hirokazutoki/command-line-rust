@@ -1,5 +1,60 @@
 # Command-line Rust (Rust練習帳)
 
+## wc
+```bash
+$ wc tests/inputs/empty.txt 
+       0       0       0 tests/inputs/empty.txt
+       
+$ cat -te tests/inputs/fox.txt 
+The  quick brown fox^Ijumps over   the lazy dog.$
+
+$ cat -te tests/inputs/fox.txt 
+The  quick brown fox^Ijumps over   the lazy dog.$
+
+$ wc tests/inputs/atlamal.txt
+       4      29     177 tests/inputs/atlamal.txt
+
+# -lフラグで行数のみを表示
+$ wc -l tests/inputs/atlamal.txt
+       4 tests/inputs/atlamal.txt
+
+# -cでバイト数のみ、-wで単語のみを表示
+$ wc -w -c tests/inputs/atlamal.txt
+      29     177 tests/inputs/atlamal.txt
+
+# フラグの順番を変えても出力は変わらない
+$ wc -wc tests/inputs/atlamal.txt
+$ wc -cw tests/inputs/atlamal.txt
+
+# -mフラグで文字数を表示
+$ wc -m tests/inputs/atlamal.txt
+     159 tests/inputs/atlamal.txt
+
+# 位置引数が与えられない場合、wcは標準入力から読み込み、ファイル名を表示しません
+$ cat tests/inputs/atlamal.txt| wc -lc
+       4     177
+
+$ wc tests/inputs/*.txt       
+       4      29     177 tests/inputs/atlamal.txt
+       0       0       0 tests/inputs/empty.txt
+       1       9      48 tests/inputs/fox.txt
+       5      38     225 total
+
+$ wc tests/inputs/fox.txt blargh tests/inputs/atlamal.txt 
+       1       9      48 tests/inputs/fox.txt
+wc: blargh: open: No such file or directory
+       4      29     177 tests/inputs/atlamal.txt
+       5      38     225 total
+
+#　標準エラーをerrファイルにリダイレクト
+$ wc tests/inputs/fox.txt blargh tests/inputs/atlamal.txt 2>err
+       1       9      48 tests/inputs/fox.txt
+       4      29     177 tests/inputs/atlamal.txt
+       5      38     225 total
+$ cat err
+wc: blargh: open: No such file or directory
+```
+
 ## head
 ```bash
 $ cd headr
