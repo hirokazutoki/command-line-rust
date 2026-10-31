@@ -93,11 +93,10 @@ pub fn run(config: Config) -> MyResult<()> {
             Err(err) => eprintln!("Failed to open {}: {}", filename, err),
             Ok(file) => {
                 // TODO: $ cargo run -- tests/inputs/empty.txtで、0 0 0と表示されるようにする
-                let line_count = file.lines().count();
-                // 単語数を入れたかったが、所有権関連のコンパイルエラーでわからなくなる
+                let info = count(file)?;
 
                 // 行数, 単語数、 バイト数、ファイル名
-                println!("{:>8}{:>8}{:>8} {}", line_count, 9999, 9999, filename);
+                println!("{:>8}{:>8}{:>8} {}", info.num_lines, info.num_bytes, 999, filename);
             }
         }
     }
@@ -117,6 +116,26 @@ pub fn count(mut file: impl BufRead) -> MyResult<FileInfo> {
     let mut num_words = 0;
     let mut num_bytes = 0;
     let mut num_chars = 0;
+    // 各行のテキストを保持する可変なバッファー
+    let mut line = String::new();
+
+    loop {
+        // ファイルハンドルから１行読み込むことを試みる
+        let line_bytes = file.read_line(&mut line)?;
+        // EOFに達したらループから抜ける
+        if line_bytes == 0 {
+            break;
+        }
+        // １ループにつき１行
+        num_bytes += line_bytes;
+        num_lines += 1;
+        // str::split_whitespaceメソッドで文字列を空白で分割
+        num_words += line.split_whitespace().count();
+        // str::charsメソッドで文字列をUnicode文字列に分割
+        num_chars += line.chars().count();
+        // 次の行のテキスト用にバッファーをクリア
+        line.clear();
+    }
 
     Ok(FileInfo {
         num_lines,
@@ -135,7 +154,7 @@ mod tests {
 
     #[test]
     fn test_count() {
-        let text = "I don't want the world.\nI just want your half.\r\n";
+        let text = "I don't want the world. I just want your half.\r\n";
         let info = count(Cursor::new(text));
         assert!(info.is_ok());
         let expected = FileInfo {
