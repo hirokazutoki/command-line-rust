@@ -87,16 +87,20 @@ pub fn get_args() -> MyResult<Config> {
 }
 
 pub fn run(config: Config) -> MyResult<()> {
-    println!("config: {:?}", config);
     for filename in &config.files {
         match open(&filename) {
             Err(err) => eprintln!("Failed to open {}: {}", filename, err),
             Ok(file) => {
-                // TODO: $ cargo run -- tests/inputs/empty.txtで、0 0 0と表示されるようにする
-                let info = count(file)?;
-
-                // 行数, 単語数、 バイト数、ファイル名
-                println!("{:>8}{:>8}{:>8} {}", info.num_lines, info.num_bytes, 999, filename);
+                // 成功したものを受け取っていることがよくわかる。わかりやすい！
+                if let Ok(info) = count(file) {
+                    // 行数, 単語数、 バイト数、ファイル名
+                    println!(
+                        "{:>8}{:>8}{:>8} {}",
+                        info.num_lines,
+                        info.num_words,
+                        info.num_bytes,
+                        filename);
+                }
             }
         }
     }
