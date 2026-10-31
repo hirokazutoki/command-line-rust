@@ -14,7 +14,17 @@ USAGE:
     wcr --bytes --chars
 
 $ cargo run -- -l tests/inputs/*.txt
-config: Config { files: ["tests/inputs/atlamal.txt", "tests/inputs/empty.txt", "tests/inputs/fox.txt"], lines: true, words: false, bytes: false, chars: false }
+       4 tests/inputs/atlamal.txt
+       0 tests/inputs/empty.txt
+       1 tests/inputs/fox.txt
+       5 total
+
+$ cargo run -- tests/inputs/*.txt
+       4      29     177 tests/inputs/atlamal.txt
+       0       0       0 tests/inputs/empty.txt
+       1       9      48 tests/inputs/fox.txt
+       5      38     225 total
+
 
 # クローン対象の理解を深めるためのコマンドテスト
 $ wc tests/inputs/empty.txt 
