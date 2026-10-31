@@ -57,12 +57,24 @@ pub fn get_args() -> MyResult<Config> {
         )
         .get_matches();
 
+    let mut lines = matches.is_present("lines");
+    let mut words = matches.is_present("words");
+    let mut bytes = matches.is_present("bytes");
+    let mut chars = matches.is_present("chars");
+
+    // 全てのフラグがfalseなら、lines・words・bytesをtrueにする
+    if [lines, words, bytes, chars].iter().all(|v| v == &false) {
+        lines = true;
+        words = true;
+        bytes = true;
+    }
+
     Ok(Config {
         files: matches.values_of_lossy("files").unwrap(),
-        lines: matches.is_present("lines"),
-        words: matches.is_present("words"),
-        bytes: matches.is_present("bytes"),
-        chars: matches.is_present("chars"),
+        lines,
+        words,
+        bytes,
+        chars,
     })
 }
 
