@@ -1,5 +1,81 @@
 # Command-line Rust (Rust練習帳)
 
+## uniq
+```bash
+cd uniqr
+
+# クローン対象の理解を深めるためのコマンドテスト
+$ uniq tests/inputs/empty.txt
+
+$ uniq tests/inputs/one.txt    
+a
+
+# -cフラグでカウントを表示
+$ uniq -c  tests/inputs/one.txt
+   1 a
+
+$ cat tests/inputs/two.txt 
+a
+a
+
+$ uniq -c tests/inputs/two.txt
+   2 a
+
+$ cat tests/inputs/three.txt 
+a
+a
+b
+b
+a
+c
+c
+c
+a
+d
+d
+d
+d
+
+# 新しい文字列に出くわすたびに１から数え直す
+$ uniq -c tests/inputs/three.txt
+   2 a
+   2 b
+   1 a
+   3 c
+   1 a
+   4 d
+
+#　sortで並び替えた後だと、実際の一意な値の数がわかる
+$ sort tests/inputs/three.txt | uniq -c
+   4 a
+   2 b
+   3 c
+   4 d
+
+$ cat tests/inputs/skip.txt 
+a
+
+a
+b
+
+# 空行があっても、カウンターをリセットすることになる
+$ uniq -c tests/inputs/skip.txt
+   1 a
+   1 
+   1 a
+   1 b
+
+# 出力をファイルに書き出すこともできる
+$ uniq -c tests/inputs/two.txt out
+$ cat out
+   2 a
+
+# 標準入力をファイルに書き込むには、入力ファイル名にダッシュを使う
+$ cat tests/inputs/two.txt | uniq -c - out
+$ cat out                                 
+   2 a
+```
+
 ## wc
 ```bash
 
