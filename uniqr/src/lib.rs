@@ -38,7 +38,7 @@ pub fn get_args() -> MyResult<Config> {
 
     Ok(Config {
         in_file: matches.value_of_lossy("in_file").unwrap().to_string(),
-        out_file: matches.value_of("out_file").map(|s| s.to_string()),
+        out_file: matches.value_of("out_file").map(String::from),
         count: matches.is_present("count"),
     })
 }
