@@ -2,6 +2,21 @@
 
 ## wc
 ```bash
+
+$ cargo run -- --help
+
+$ cargo test
+
+$ cargo run -- -cm tests/inputs/fox.txt
+error: The argument '--bytes' cannot be used with '--chars'
+
+USAGE:
+    wcr --bytes --chars
+
+$ cargo run -- -l tests/inputs/*.txt
+config: Config { files: ["tests/inputs/atlamal.txt", "tests/inputs/empty.txt", "tests/inputs/fox.txt"], lines: true, words: false, bytes: false, chars: false }
+
+# クローン対象の理解を深めるためのコマンドテスト
 $ wc tests/inputs/empty.txt 
        0       0       0 tests/inputs/empty.txt
        
