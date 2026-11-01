@@ -2,7 +2,13 @@
 
 ## uniq
 ```bash
-cd uniqr
+$ cd uniqr
+
+$ cargo run -- tests/inputs/one.txt
+a
+
+$ cargo run -- - < tests/inputs/one.txt
+a
 
 # クローン対象の理解を深めるためのコマンドテスト
 $ uniq tests/inputs/empty.txt
