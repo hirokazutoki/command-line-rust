@@ -4,8 +4,9 @@ use predicates::prelude::*;
 use pretty_assertions::assert_eq;
 use rand::{distributions::Alphanumeric, Rng};
 use std::fs;
-use tempfile::NamedTempFile;
+use tempfile::NamedTempFile; // 一時的な出力ファイルを作成するために使用
 
+// 入力ファイルと期待される出力を定義するための構造体
 struct Test {
     input: &'static str,
     out: &'static str,
