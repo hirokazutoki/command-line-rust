@@ -56,6 +56,17 @@ pub fn run(config: Config) -> MyResult<()> {
     //　出現回数を保持する可変な変数
     let mut count: u64 = 0;
 
+    // 環境から動的な値（config)をキャプチャすことができないので、クロージャー関数にする
+    let print = |count: u64, text: &str| {
+        if count > 0 {
+            if config.count {
+                println!("{:>4} {}", count, text);
+            } else {
+                println!("{}", text);
+            }
+        }
+    };
+
     loop {
         let bytes = file.read_line(&mut line)?;
         if bytes == 0 {
@@ -65,9 +76,7 @@ pub fn run(config: Config) -> MyResult<()> {
         // 現在の行と前の行を比較する。可能な限り末尾の空白を除去をしている。
         if line.trim_end() != previous.trim_end() {
             // 出現回数が0より大きい場合、出現回数と前の行を出力する。
-            if count > 0 {
-                print!("{:>4} {}", count, previous)
-            }
+            print(count, &previous);
             previous = line.clone();
             count = 0;
         }
@@ -76,9 +85,7 @@ pub fn run(config: Config) -> MyResult<()> {
         line.clear();
     }
 
-    if count > 0 {
-        print!("{:>4} {}", count, previous)
-    }
+    print(count, &previous);
 
     Ok(())
 }
