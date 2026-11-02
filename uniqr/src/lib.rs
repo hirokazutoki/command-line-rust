@@ -51,14 +51,35 @@ pub fn run(config: Config) -> MyResult<()> {
     let mut file = open(&config.in_file)
             .map_err(|e| format!("{}: {}", config.in_file, e))?;
     let mut line = String::new();
+    // 前の行を保持する可変な変数
+    let mut previous = String::new();
+    //　出現回数を保持する可変な変数
+    let mut count: u64 = 0;
+
     loop {
         let bytes = file.read_line(&mut line)?;
         if bytes == 0 {
             break;
         }
-        print!("{}", line);
+
+        // 現在の行と前の行を比較する。可能な限り末尾の空白を除去をしている。
+        if line.trim_end() != previous.trim_end() {
+            // 出現回数が0より大きい場合、出現回数と前の行を出力する。
+            if count > 0 {
+                print!("{:>4} {}", count, previous)
+            }
+            previous = line.clone();
+            count = 0;
+        }
+
+        count += 1;
         line.clear();
     }
+
+    if count > 0 {
+        print!("{:>4} {}", count, previous)
+    }
+
     Ok(())
 }
 
