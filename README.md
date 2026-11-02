@@ -10,6 +10,33 @@ a
 $ cargo run -- - < tests/inputs/one.txt
 a
 
+$ cargo run -- -c tests/inputs/one.txt 
+   1 a
+
+$ cargo run -- -c tests/inputs/two.txt
+   2 a
+
+$ cargo run -- -c tests/inputs/three.txt
+   2 a
+   2 b
+   1 a
+   3 c
+   1 a
+   4 d
+
+$ sort tests/inputs/three.txt | cargo run -- -c
+   4 a
+   2 b
+   3 c
+   4 d
+
+$ sort tests/inputs/three.txt | cargo run -- -c - out
+$ cat out
+   4 a
+   2 b
+   3 c
+   4 d
+
 # クローン対象の理解を深めるためのコマンドテスト
 $ uniq tests/inputs/empty.txt
 
