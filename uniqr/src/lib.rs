@@ -2,7 +2,8 @@ use clap::{App, Arg};
 use std::{
     error::Error,
     fs::File,
-    io::{self, BufRead, BufReader}
+    fmt::Write,
+    io::{self, BufRead, BufReader, Write}
 };
 
 type MyResult<T> = Result<T, Box<dyn Error>>;
@@ -50,6 +51,12 @@ pub fn get_args() -> MyResult<Config> {
 pub fn run(config: Config) -> MyResult<()> {
     let mut file = open(&config.in_file)
             .map_err(|e| format!("{}: {}", config.in_file, e))?;
+
+    let mut out_file: Box<dyn Write> = match &config.out_file {
+        Some(out_name) => Box::new(File::create(out_name)?),
+        _ => Box::new(io::stdout()),
+    };
+
     let mut line = String::new();
     // 前の行を保持する可変な変数
     let mut previous = String::new();
@@ -57,14 +64,16 @@ pub fn run(config: Config) -> MyResult<()> {
     let mut count: u64 = 0;
 
     // 環境から動的な値（config)をキャプチャすことができないので、クロージャー関数にする
-    let print = |count: u64, text: &str| {
+    // out_fileを借用するので、mutキーワードで宣言して可変にする必要がある
+    let mut print = |count: u64, text: &str| -> MyResult<()> {
         if count > 0 {
             if config.count {
-                println!("{:>4} {}", count, text);
+                write!(out_file, "{:>4} {}", count, text)?;
             } else {
-                println!("{}", text);
+                write!(out_file, "{}", text)?;
             }
         }
+        Ok(())
     };
 
     loop {
@@ -76,7 +85,7 @@ pub fn run(config: Config) -> MyResult<()> {
         // 現在の行と前の行を比較する。可能な限り末尾の空白を除去をしている。
         if line.trim_end() != previous.trim_end() {
             // 出現回数が0より大きい場合、出現回数と前の行を出力する。
-            print(count, &previous);
+            print(count, &previous)?;
             previous = line.clone();
             count = 0;
         }
@@ -85,7 +94,7 @@ pub fn run(config: Config) -> MyResult<()> {
         line.clear();
     }
 
-    print(count, &previous);
+    print(count, &previous)?;
 
     Ok(())
 }
