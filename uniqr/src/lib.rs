@@ -56,12 +56,6 @@ pub fn run(config: Config) -> MyResult<()> {
         _ => Box::new(io::stdout()),
     };
 
-    let mut line = String::new();
-    // 前の行を保持する可変な変数
-    let mut previous = String::new();
-    //　出現回数を保持する可変な変数
-    let mut count: u64 = 0;
-
     // 環境から動的な値（config)をキャプチャすことができないので、クロージャー関数にする
     // out_fileを借用するので、mutキーワードで宣言して可変にする必要がある
     let mut print = |count: u64, text: &str| -> MyResult<()> {
@@ -74,6 +68,12 @@ pub fn run(config: Config) -> MyResult<()> {
         }
         Ok(())
     };
+
+    let mut line = String::new();
+    // 前の行を保持する可変な変数
+    let mut previous = String::new();
+    //　出現回数を保持する可変な変数
+    let mut count: u64 = 0;
 
     loop {
         let bytes = file.read_line(&mut line)?;
