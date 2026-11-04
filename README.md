@@ -420,6 +420,25 @@ $ cargo test
 ```bash
 $ cd hello
 
+$ cargo run -- --help
+findr 0.1.0
+Hirokazu Toki
+Rust findr
+
+USAGE:
+    findr [OPTIONS] [PATH]
+
+FLAGS:
+    -h, --help       Prints help information
+    -V, --version    Prints version information
+
+OPTIONS:
+    -n, --name <NAME>    Name
+    -t, --type <TYPE>    Entry type [possible values: f, d, l]
+
+ARGS:
+    <PATH>    Search paths [default: .]
+
 # コンパイル&実行
 $ cargo run
 cargo run
