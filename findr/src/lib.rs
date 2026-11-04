@@ -13,7 +13,7 @@ pub fn get_args() -> MyResult<Config> {
     let matches = App::new("findr")
         .version("0.1.0")
         .author("Hirokazu Toki")
-        .about("Rust findr")
+        .about("Rust find")
         .arg(
             Arg::with_name("path")
                 .value_name("PATH")
