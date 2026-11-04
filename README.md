@@ -6,7 +6,7 @@ cd findr
 
 # クローン対象の理解を深めるためのコマンドテスト
 cd tests/input
-$ tree -l    
+$ tree
 .
 ├── a
 │   ├── a.txt
@@ -15,7 +15,7 @@ $ tree -l
 │       └── c
 │           └── c.mp3
 ├── d
-│   ├── b.csv
+│   ├── b.csv -> ../a/b/b.csv
 │   ├── d.tsv
 │   ├── d.txt
 │   └── e
@@ -25,6 +25,7 @@ $ tree -l
 └── g.csv
 
 7 directories, 9 files
+
 $ find .
 .
 ./g.csv
@@ -50,16 +51,23 @@ $ find . -type f/
 ./a/b/b.csv
 ./a/b/c/c.mp3
 ./f/f.txt
-./d/b.csv
 ./d/d.txt
 ./d/d.tsv
 ./d/e/e.mp3
 
 # リンクだけを検索
 $ find . -type l
+./d/b.csv
 
 # ディレクトリだけを検索
 $ find . -type d
+.
+./a
+./a/b
+./a/b/c
+./f
+./d
+./d/e
 
 # nameオプションを指定すると、ファイルグロブに一致するエントリを検索できる
 $ find . -name \*.csv
@@ -79,6 +87,16 @@ $ find . -name "*.csv" -o -name "*.txt"
 ./f/f.txt
 ./d/b.csv
 ./d/d.txt
+
+# nameオプションと、typeオプションを組み合わせることも可能
+$ find . -name "*.csv" -type f -o -type l
+./g.csv
+./a/b/b.csv
+./d/b.csv
+$ find . \( -type f -o -type l \) -name "*.csv"
+./g.csv
+./a/b/b.csv
+./d/b.csv
 
 # 位置引数として複数の検索パスを列挙することも可能
 $ find a/b d -name "*.mp3"
