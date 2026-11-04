@@ -1,5 +1,113 @@
 # Command-line Rust (Rust練習帳)
 
+## find
+```bash
+cd findr
+
+# クローン対象の理解を深めるためのコマンドテスト
+cd tests/input
+$ tree -l    
+.
+├── a
+│   ├── a.txt
+│   └── b
+│       ├── b.csv
+│       └── c
+│           └── c.mp3
+├── d
+│   ├── b.csv
+│   ├── d.tsv
+│   ├── d.txt
+│   └── e
+│       └── e.mp3
+├── f
+│   └── f.txt
+└── g.csv
+
+7 directories, 9 files
+$ find .
+.
+./g.csv
+./a
+./a/a.txt
+./a/b
+./a/b/b.csv
+./a/b/c
+./a/b/c/c.mp3
+./f
+./f/f.txt
+./d
+./d/b.csv
+./d/d.txt
+./d/d.tsv
+./d/e
+./d/e/e.mp3
+
+# ファイルだけを検索
+$ find . -type f/
+./g.csv
+./a/a.txt
+./a/b/b.csv
+./a/b/c/c.mp3
+./f/f.txt
+./d/b.csv
+./d/d.txt
+./d/d.tsv
+./d/e/e.mp3
+
+# リンクだけを検索
+$ find . -type l
+
+# ディレクトリだけを検索
+$ find . -type d
+
+# nameオプションを指定すると、ファイルグロブに一致するエントリを検索できる
+$ find . -name \*.csv
+./g.csv
+./a/b/b.csv
+./d/b.csv
+$ find . -name "*.csv"
+./g.csv
+./a/b/b.csv
+./d/b.csv
+
+# oオプションは、or という意味
+$ find . -name "*.csv" -o -name "*.txt"
+./g.csv
+./a/a.txt
+./a/b/b.csv
+./f/f.txt
+./d/b.csv
+./d/d.txt
+
+# 位置引数として複数の検索パスを列挙することも可能
+$ find a/b d -name "*.mp3"
+a/b/c/c.mp3
+d/e/e.mp3
+
+# 指定した検索パスが存在しない場合は、エラーが表示される
+$ find blargh
+find: blargh: No such file or directory
+
+# 引数が既存のファイル名である場合、単にファイル名を表示する
+$ find a/a.txt 
+a/a.txt
+
+# 読み込めないディレクトリに遭遇すると、標準エラーにメッセージを出力し、処理を継続する
+$ mkdir cant-touch-this && chmod 000 cant-touch-this
+$ find . -type d/
+.
+./a
+./a/b
+./a/b/c
+./f
+./cant-touch-this
+find: ./cant-touch-this: Permission denied
+./d
+./d/e
+$ chmod 700 cant-touch-this && rmdir cant-touch-this 
+```
+
 ## uniq
 ```bash
 $ cd uniqr
