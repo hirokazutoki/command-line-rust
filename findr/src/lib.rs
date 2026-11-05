@@ -50,10 +50,24 @@ pub fn get_args() -> MyResult<Config> {
         )
         .get_matches();
 
+    let mut paths = Vec::new();
+    if let Some(path) = matches.value_of("path") {
+        paths.push(path.to_string());
+    }
+
+    let mut entry_types = Vec::new();
+    if matches.value_of("type").unwrap_or("") == "f" {
+        entry_types.push(File);
+    } else if matches.value_of("type").unwrap_or("") == "d" {
+        entry_types.push(Dir);
+    } else if matches.value_of("type").unwrap_or("") == "l" {
+        entry_types.push(Link);
+    }
+
     Ok(Config {
-        paths: Vec::new(),
+        paths,
         names: Vec::new(),
-        entry_types: Vec::new(),
+        entry_types,
     })
 }
 

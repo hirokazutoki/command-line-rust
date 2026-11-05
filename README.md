@@ -4,6 +4,21 @@
 ```bash
 cd findr
 
+$ cargo run
+Config { paths: ["."], names: [], entry_types: [] }
+
+$ cargo run -- --type f
+Config { paths: ["."], names: [], entry_types: [File] }
+
+$ cargo run -- --type d
+Config { paths: ["."], names: [], entry_types: [Dir] }
+
+$ cargo run -- --type l
+Config { paths: ["."], names: [], entry_types: [Link] }
+
+$ cargo run -- --type x
+error: 'x' isn't a valid value for '--type <TYPE>'
+
 # クローン対象の理解を深めるためのコマンドテスト
 cd tests/input
 $ tree
