@@ -1,11 +1,22 @@
+use crate::EntryType::*;
 use clap::{App, Arg};
+use regex::Regex;
 use std::error::Error;
 
 type MyResult<T> = Result<T, Box<dyn Error>>;
 
+#[derive(Debug, Eq, PartialEq)]
+enum EntryType {
+    Dir,
+    File,
+    Link,
+}
+
 #[derive(Debug)]
 pub struct Config {
-    //
+    paths: Vec<String>,
+    names: Vec<Regex>,
+    entry_types: Vec<EntryType>,
 }
 
 
@@ -39,13 +50,14 @@ pub fn get_args() -> MyResult<Config> {
         )
         .get_matches();
 
-    // TODO: p.176ff
     Ok(Config {
-        //
+        paths: Vec::new(),
+        names: Vec::new(),
+        entry_types: Vec::new(),
     })
 }
 
 pub fn run(config: Config) -> MyResult<()> {
-    print!("{:?}", config);
+    println!("{:?}", config);
     Ok(())
 }
