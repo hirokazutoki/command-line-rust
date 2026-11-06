@@ -29,7 +29,8 @@ pub fn get_args() -> MyResult<Config> {
             Arg::with_name("path")
                 .value_name("PATH")
                 .help("Search paths")
-                .default_value("."),
+                .default_value(".")
+                .multiple(true),
         )
         .arg(
             Arg::with_name("name")
@@ -37,7 +38,8 @@ pub fn get_args() -> MyResult<Config> {
                 .short("n")
                 .long("name")
                 .help("Name")
-                .takes_value(true),
+                .takes_value(true)
+                .multiple(true),
         )
         .arg(
             Arg::with_name("type")
@@ -46,6 +48,7 @@ pub fn get_args() -> MyResult<Config> {
                 .long("type")
                 .help("Entry type")
                 .takes_value(true)
+                .multiple(true)
                 .possible_values(&["f", "d", "l"]), // 新しく知った書き方
         )
         .get_matches();
