@@ -78,14 +78,25 @@ pub fn get_args() -> MyResult<Config> {
         // Someの値か、デフォルトの値を返す
         .unwrap_or_default();
 
-    let mut entry_types = Vec::new();
-    if matches.value_of("type").unwrap_or("") == "f" {
-        entry_types.push(File);
-    } else if matches.value_of("type").unwrap_or("") == "d" {
-        entry_types.push(Dir);
-    } else if matches.value_of("type").unwrap_or("") == "l" {
-        entry_types.push(Link);
-    }
+    let entry_types = matches
+        .values_of_lossy("types")
+        // ユーザーがnamesにSome(vals)を与えた場合、Option::mapを使う
+        .map(|vals| {
+            // 値を反復処理
+            vals.into_iter()
+                // 与えられた値をチェック
+                .map(|val| match val.as_str() {
+                    "d" => Dir,
+                    "f" => File,
+                    "l" => Link,
+                    // ここに到達したらパニックを起こすようにする
+                    _ => unreachable!("Invalid type"),
+                })
+                //　自動的に推論されるVec<EntryType>型の値を作成
+                .collect()
+        })
+        // Someの値か、デフォルトの値を返す
+        .unwrap_or_default();
 
     Ok(Config {
         paths,
