@@ -58,10 +58,25 @@ pub fn get_args() -> MyResult<Config> {
         paths.push(path.to_string());
     }
 
-    let mut names = Vec::new();
-    if let Some(name) = matches.value_of("name") {
-        names.push(regex::escape(name));
-    }
+    let names = matches
+        .values_of_lossy("name")
+        // ユーザーがnamesにSome(vals)を与えた場合、Option::mapを使う
+        .map(|vals| {
+            // 値を反復処理
+            vals.into_iter()
+                .map(|name| {
+                    // 与えられたnameで新しいRegexの作成を試みる。結果は、Result型。
+                    Regex::new(&name)
+                        // エラーが発生すれば、無効な正規表現であることを伝えるエラーメッセージを作成
+                        .map_err(|_| format!("Invalid --name \"{}\"", name))
+                })
+                //　結果をベクタにする
+                .collect::<Result<Vec<_>, _>>()
+        })
+        // Option<Result<T, E>>をResult<Option<T>, E>に変換
+        .transpose()?
+        // Someの値か、デフォルトの値を返す
+        .unwrap_or_default();
 
     let mut entry_types = Vec::new();
     if matches.value_of("type").unwrap_or("") == "f" {
