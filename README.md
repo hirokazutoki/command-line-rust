@@ -19,6 +19,9 @@ Config { paths: ["."], names: [], entry_types: [Link] }
 $ cargo run -- --type x
 error: 'x' isn't a valid value for '--type <TYPE>'
 
+$ cargo run -- -t f l -n txt mp3  -- tests/inputs/a tests/inputs/d
+Config { paths: ["tests/inputs/a", "tests/inputs/d"], names: [Regex("txt"), Regex("mp3")], entry_types: [File, Link] }
+
 # クローン対象の理解を深めるためのコマンドテスト
 cd tests/input
 $ tree

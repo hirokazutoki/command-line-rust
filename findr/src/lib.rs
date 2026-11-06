@@ -26,14 +26,14 @@ pub fn get_args() -> MyResult<Config> {
         .author("Hirokazu Toki")
         .about("Rust find")
         .arg(
-            Arg::with_name("path")
+            Arg::with_name("paths")
                 .value_name("PATH")
                 .help("Search paths")
                 .default_value(".")
                 .multiple(true),
         )
         .arg(
-            Arg::with_name("name")
+            Arg::with_name("names")
                 .value_name("NAME")
                 .short("n")
                 .long("name")
@@ -42,7 +42,7 @@ pub fn get_args() -> MyResult<Config> {
                 .multiple(true),
         )
         .arg(
-            Arg::with_name("type")
+            Arg::with_name("types")
                 .value_name("TYPE")
                 .short("t")
                 .long("type")
@@ -53,13 +53,8 @@ pub fn get_args() -> MyResult<Config> {
         )
         .get_matches();
 
-    let mut paths = Vec::new();
-    if let Some(path) = matches.value_of("path") {
-        paths.push(path.to_string());
-    }
-
     let names = matches
-        .values_of_lossy("name")
+        .values_of_lossy("names")
         // ユーザーがnamesにSome(vals)を与えた場合、Option::mapを使う
         .map(|vals| {
             // 値を反復処理
@@ -99,7 +94,7 @@ pub fn get_args() -> MyResult<Config> {
         .unwrap_or_default();
 
     Ok(Config {
-        paths,
+        paths: matches.values_of_lossy("paths").unwrap(),
         names,
         entry_types,
     })
