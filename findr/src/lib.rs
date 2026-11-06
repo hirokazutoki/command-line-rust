@@ -55,6 +55,11 @@ pub fn get_args() -> MyResult<Config> {
         paths.push(path.to_string());
     }
 
+    let mut names = Vec::new();
+    if let Some(name) = matches.value_of("name") {
+        names.push(regex::escape(name));
+    }
+
     let mut entry_types = Vec::new();
     if matches.value_of("type").unwrap_or("") == "f" {
         entry_types.push(File);
@@ -66,7 +71,7 @@ pub fn get_args() -> MyResult<Config> {
 
     Ok(Config {
         paths,
-        names: Vec::new(),
+        names,
         entry_types,
     })
 }
